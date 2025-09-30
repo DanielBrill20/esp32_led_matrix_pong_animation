@@ -21,6 +21,57 @@
 
 MatrixPanel_I2S_DMA *dma_display = nullptr;
 
+class Paddle{
+  int8_t x;
+  int8_t y;
+  uint16_t r;
+  uint16_t g;
+  uint16_t b;
+  static uint8_t w;
+  static uint8_t h;
+
+  void moveFrame(int8_t ballXVel, int8_t ballYPos) {
+    // Ball moving towards paddle
+    if (((ballXVel < 0) && (x < PANEL_RES_X/2)) || ((ballXVel > 0) && (x > PANEL_RES_X/2))) {
+      int8_t yNew = ballYPos - h / 2;
+      // Cheap solution to stop crazy amounts of paddle teleporting
+      if ((abs(yNew-y) < 4)) {
+        y = yNew;
+      } else {
+        if (yNew < y) {
+          y -= 3;
+        } else {
+          y += 3;
+        }
+      }
+    }
+
+    if (y < 0) {
+      y = 0;
+    } else if (y+h > PANEL_RES_Y-1) {
+      y = PANEL_RES_Y - h;
+    }
+  }
+
+public:
+  Paddle(int8_t paddleX, int8_t paddleY,
+    uint16_t paddleR, uint16_t paddleG, uint16_t paddleB) {
+    x = paddleX;
+    y = paddleY;
+    r = paddleR;
+    g = paddleG;
+    b = paddleB;
+  }
+
+  static uint8_t getWidth() { return w; }
+  static uint8_t getHeight() { return h; }
+
+  void drawPaddle(int8_t ballXVel, int8_t ballYPos) {
+    moveFrame(ballXVel, ballYPos);
+    dma_display->fillRect(x, y, w, h, dma_display->color565(r, g, b));
+  }
+};
+
 class Ball {
   int8_t x;
   int8_t y;
@@ -35,18 +86,18 @@ class Ball {
 
   void collidesWall() {
     if ((y-r)<=0) {
-      y = 2;
+      y = r;
     } else {
-      y = 61;
+      y = PANEL_RES_Y - (r + 1);
     }
     yVel = -yVel;
   }
 
   void checkCollides() {
-    if ((x-r)<=6 || (x+r)>=57) {
+    if ((x-r)<=(3+Paddle::getWidth()) || (x+r)>=PANEL_RES_X-(4+Paddle::getWidth())) {
       collidesPaddle();
     }
-    if ((y-r)<=0 || (y+r)>=63) {
+    if ((y-r)<=0 || (y+r)>=PANEL_RES_Y-1) {
       collidesWall();
     }
   }
@@ -58,7 +109,7 @@ class Ball {
   }
 
 public:
-  Ball(int8_t ballX, int8_t ballY, uint8_t ballR, int8_t ballXVel, int8_t ballYVel) {
+  Ball(int8_t ballX, int8_t ballY, uint8_t ballR = 2, int8_t ballXVel = 1, int8_t ballYVel = 0) {
     x = ballX;
     y = ballY;
     r = ballR;
@@ -76,59 +127,12 @@ public:
   }
 };
 
-class Paddle{
-  int8_t x;
-  int8_t y;
-  uint8_t w;
-  uint8_t h;
-  uint16_t r;
-  uint16_t g;
-  uint16_t b;
+uint8_t Paddle::w = 4;
+uint8_t Paddle::h = 20;
 
-  void moveFrame(int8_t ballXVel, int8_t ballYPos) {
-    // Ball moving towards paddle
-    if (((ballXVel < 0) && (x < 32)) || ((ballXVel > 0) && (x > 32))) {
-      int8_t yNew = ballYPos - h / 2;
-      // Cheap solution to stop crazy amounts of teleporting
-      if ((abs(yNew-y) < 4)) {
-        y = yNew;
-      } else {
-        if (yNew < y) {
-          y -= 3;
-        } else {
-          y += 3;
-        }
-      }
-    }
-
-    if (y < 0) {
-      y = 0;
-    } else if (y+h > 63) {
-      y = 64 - h;
-    }
-  }
-
-public:
-  Paddle(int8_t paddleX, int8_t paddleY, uint8_t paddleW, uint8_t paddleH,
-        uint16_t paddleR, uint16_t paddleG, uint16_t paddleB) {
-    x = paddleX;
-    y = paddleY;
-    w = paddleW;
-    h = paddleH;
-    r = paddleR;
-    g = paddleG;
-    b = paddleB;
-  }
-
-  void drawPaddle(int8_t ballXVel, int8_t ballYPos) {
-    moveFrame(ballXVel, ballYPos);
-    dma_display->fillRect(x, y, w, h, dma_display->color565(r, g, b));
-  }
-};
-
-Ball ball(32, 32, 2, 1, 0);
-Paddle redPaddle(3, 24, 3, 15, 70, 0, 0);
-Paddle bluePaddle(58, 24, 3, 15, 0, 0, 110);
+Ball ball(PANEL_RES_X/2, PANEL_RES_Y/2);
+Paddle redPaddle(3, (PANEL_RES_Y-Paddle::getHeight())/2, 70, 0, 0);
+Paddle bluePaddle(PANEL_RES_X-(3+Paddle::getWidth()), (PANEL_RES_Y-Paddle::getHeight())/2, 0, 0, 110);
 
 void setup() {
   // Matrix configuration
