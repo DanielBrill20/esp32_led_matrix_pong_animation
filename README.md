@@ -12,7 +12,7 @@ This project isn’t a full Pong game — it’s a **hardware demo** designed to
 
 ## Demo  
 
-[VIDEO](https://github.com/DanielBrill20/esp32_led_matrix_pong_animation/blob/main/assets/PongAnimationDemo.mp4)
+![PongAnimationDemo.mp4](assets/PongAnimationDemo.gif)  
 
 ---
 
@@ -54,11 +54,3 @@ Key features in the code:
 3. Open `esp32_hub75_pong_animation.ino`.  
 4. Update pin mappings in the source if your wiring differs.  
 5. Upload to an ESP32-S3 DevKitC-1 (or another ESP32 with enough RAM).  
-
----
-
-## Future Extensions  
-
-- Add scoring + game-over states.  
-- Implement manual paddle control (buttons or serial input).  
-- Support daisy-chained panels (larger displays).  
