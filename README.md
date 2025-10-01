@@ -28,6 +28,24 @@ This project isn’t a full Pong game — it’s a **hardware demo** designed to
 The fuse prevents the ESP32 from overdrawing current, since the LED matrix is capable of much higher currents.*  
 
 ### ESP32 Pinout  
+
+| Signal | ESP32-S3 Pin |
+|--------|--------------|
+| R1     | 4            |
+| G1     | 5            |
+| B1     | 6            |
+| R2     | 17           |
+| G2     | 18           |
+| B2     | 8            |
+| A      | 10           |
+| B      | 11           |
+| C      | 12           |
+| D      | 13           |
+| E      | 9            |
+| LAT    | 47           |
+| OE     | 21           |
+| CLK    | 16           |
+
 ![ESP32S3Wiring.JPG](assets/ESP32S3Wiring.JPG)  
 *Pin mapping between the ESP32-S3 DevKitC-1 and the HUB75 connector.*  
 
