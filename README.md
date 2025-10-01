@@ -12,23 +12,23 @@ This project isn’t a full Pong game — it’s a **hardware demo** designed to
 
 ## Demo  
 
-VIDEO
+[VIDEO](https://github.com/DanielBrill20/esp32_led_matrix_pong_animation/blob/main/assets/PongAnimationDemo.mp4)
 
 ---
 
 ## Hardware Setup  
 
 ### Panel & Connections  
-![hub75_back.jpg](docs/images/hub75_back.jpg)  
+![PanelWiring.jpg](assets/PanelWiring.jpg)  
 *Back of the 64×64 RGB matrix showing the HUB75 input connector and power terminals.*  
 
 ### Power Wiring  
-![esp32_power_fuse.jpg](docs/images/esp32_power_fuse.jpg)  
+![ESP32S3PowerWiring.JPG](assets/ESP32S3PowerWiring.JPG)  
 *ESP32 powered from a regulated 5V PSU with a **0.75 A fuse** for added safety.  
 The fuse prevents the ESP32 from overdrawing current, since the LED matrix is capable of much higher currents.*  
 
 ### ESP32 Pinout  
-![esp32_pinout.jpg](docs/images/esp32_pinout.jpg)  
+![ESP32S3Wiring.JPG](assets/ESP32S3Wiring.JPG)  
 *Pin mapping between the ESP32-S3 DevKitC-1 and the HUB75 connector.*  
 
 ---
