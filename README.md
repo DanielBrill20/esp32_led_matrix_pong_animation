@@ -47,7 +47,11 @@ The fuse prevents the ESP32 from overdrawing current, since the LED matrix is ca
 | CLK    | 16           |
 
 ![ESP32S3Wiring.JPG](assets/ESP32S3Wiring.JPG)  
-*Pin mapping between the ESP32-S3 DevKitC-1 and the HUB75 connector.*  
+*Pin mapping between the ESP32-S3 DevKitC-1 and the HUB75 connector/power cables.*
+
+Note: When wiring your ESP32 board, take note of the board's pinouts and strapping pins. My chosen pinout strategically avoided strapping pins (0, 3, 45, and 46 on ESP32-S3) to prevent unexpected results or conflicts if any of these pins were needed for something else (i.e., JTAG). Other than that, pin configurations can vary, just make sure you're wiring to GPIO pins!
+
+Performance Note: Notice how, hidden in the back right corner, there is a disconnected ground pin. This is one of the 2 grounds in the HUB75 connection. I found that disconnecting a pin led to slightly better results and fewer erroneous artifacts than both being connected. I suspect both pins introduce a ground loop, but more research is to come.
 
 ---
 
